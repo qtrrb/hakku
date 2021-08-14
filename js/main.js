@@ -7,7 +7,7 @@ request.send();
 
 request.onload = function() {
     const IDs = request.response;
-    for (let i=0;i<10;i++) {
+    for (let i=0;i<30;i++) {
         getContentFromID(IDs[i])
     }
 }
@@ -19,6 +19,22 @@ function getContentFromID(StoryID) {
     request_story.responseType = 'json';
     request_story.send();
     request_story.onload = function() {
-        console.log(request_story.response)
+        addStoryContainer(request_story.response)
     }
+}
+
+function addStoryContainer(StoryID) {
+    let template = document.querySelector(".story-template");
+    let container = document.querySelector(".container");
+    let clone = template.content.cloneNode(true)
+    let title= clone.querySelector(".title");
+    title.textContent = StoryID["title"];
+    title.href = StoryID["url"]
+    let by= clone.querySelector(".by");
+    by.textContent = "by: " + StoryID["by"];
+    let score= clone.querySelector(".score");
+    score.textContent = "score: " + StoryID["score"];
+    let descendants= clone.querySelector(".descendants");
+    descendants.textContent = StoryID["descendants"] + " comments";
+    container.appendChild(clone);
 }
